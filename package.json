@@ -4,9 +4,11 @@
   "description": "Backend for Railway deployment",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
+  "start": "node server.js",
+  "dev": "nodemon server.js",
+  "build": "cd client && npm run build",
+  "postinstall": "npm run build"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {
