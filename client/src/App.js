@@ -8,6 +8,8 @@ import { HideLoading, ReloadData, SetPortfolioData, ShowLoading } from "./redux/
 import Admin from "./pages/Admin";
 import Login from "./pages/Admin/Login";
 
+const API_URL = process.env.REACT_APP_API_URL;  // ✅ Add this
+
 function App() {
   const { loading, portfolioData, reloadData } = useSelector((state) => state.root);
   const dispatch = useDispatch();
@@ -15,7 +17,7 @@ function App() {
   const getPortfolioData = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await axios.get("/api/portfolio/get-portfolio-data");
+      const response = await axios.get(`${API_URL}/api/portfolio/get-portfolio-data`);  // ✅ Use API_URL
       dispatch(SetPortfolioData(response.data));
       dispatch(ReloadData(false));
       dispatch(HideLoading());
