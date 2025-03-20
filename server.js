@@ -1,26 +1,29 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const connectDB = require("./config/dbConfig");
-const cors = require("cors"); // ✅ CORS Import Karo
-const path = require("path");
-
-console.log("Mongo URI:", process.env.MONGO_URI); // ✅ Debugging ke liye
 
 const app = express();
 app.use(express.json());
 
-// ✅ CORS Middleware Enable Karo
+// ✅ CORS Middleware (Allow Frontend Requests)
 app.use(cors({
-  origin: "https://ornate-starburst-9643a5.netlify.app", // ✅ Netlify frontend ka URL
+  origin: ["https://nikhil-portfolio-production.up.railway.app"], // ✅ Allowed frontend URLs
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 connectDB().then(() => {
   const portfolioRoute = require("./routes/portfolioRoute");
   app.use("/api/portfolio", portfolioRoute);
 
+  // ✅ Default Route to Prevent "Not Found" on root URL
+  app.get("/", (req, res) => {
+  res.send("🚀 API is running! Go to /api/portfolio/get-portfolio-data to see data.");
+});
+
   const port = process.env.PORT || 5000;
+  const path = require("path");
 
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "client", "build")));
