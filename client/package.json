@@ -49,5 +49,7 @@
   "devDependencies": {
     "tailwindcss": "^3.4.17"
   },
-  "proxy": "http://localhost:5000/"
+  
+  "proxy": "https://nikhil-portfolio-production.up.railway.app"
+
 }
