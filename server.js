@@ -1,18 +1,26 @@
 require("dotenv").config();
-console.log("Mongo URI:", process.env.MONGO_URI); // ✅ Debugging ke liye
-
 const express = require("express");
 const connectDB = require("./config/dbConfig");
+const cors = require("cors"); // ✅ CORS Import Karo
+const path = require("path");
+
+console.log("Mongo URI:", process.env.MONGO_URI); // ✅ Debugging ke liye
 
 const app = express();
 app.use(express.json());
+
+// ✅ CORS Middleware Enable Karo
+app.use(cors({
+  origin: "https://ornate-starburst-9643a5.netlify.app", // ✅ Netlify frontend ka URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 connectDB().then(() => {
   const portfolioRoute = require("./routes/portfolioRoute");
   app.use("/api/portfolio", portfolioRoute);
 
   const port = process.env.PORT || 5000;
-  const path = require("path");
 
   if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "client", "build")));
